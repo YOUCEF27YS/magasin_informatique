@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Produits</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h2>Liste des produits</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Stock</th>
+    </tr>
+
+    {% for produit in produits %}
+    <tr>
+        <td>{{ produit.nom }}</td>
+        <td>{{ produit.prix }} €</td>
+        <td>{{ produit.stock }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br>
+
+<a href="/">
+    <button>Retour accueil</button>
+</a>
+
+</body>
+
+</html><!DOCTYPE html>
+<html>
+
+<head>
+    <title>Produits</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h2>Liste des produits</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Stock</th>
+    </tr>
+
+    {% for produit in produits %}
+    <tr>
+        <td>{{ produit.nom }}</td>
+        <td>{{ produit.prix }} €</td>
+        <td>{{ produit.stock }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br>
+
+<a href="/">
+    <button>Retour accueil</button>
+</a>
+
+</body>
+
+</html>

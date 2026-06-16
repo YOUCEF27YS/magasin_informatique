@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Espace Client</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/" class="logout-btn">
+        Se déconnecter
+    </a>
+
+    <h2>Espace Client</h2>
+
+    <h3>Mes produits achetés</h3>
+
+    <table border="1">
+
+        <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+        </tr>
+
+        {% for p in produits %}
+        <tr>
+            <td>{{ p.nom }}</td>
+            <td>{{ p.prix }} €</td>
+            <td>{{ p.quantite }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br><br>
+
+    <div class="commande-center">
+
+        <a href="/client/{{ id_client }}/commander">
+
+            <button class="btn-commander">
+                Commander un produit
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

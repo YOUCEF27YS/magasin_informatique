@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Administration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h2>Espace Administrateur</h2>
+
+<a href="/">Se déconnecter</a>
+
+<h3>Produits</h3>
+
+<table border="1">
+
+<tr>
+    <th>Nom</th>
+    <th>Prix</th>
+    <th>Stock</th>
+</tr>
+
+{% for p in produits %}
+<tr>
+    <td>{{ p.nom }}</td>
+    <td>{{ p.prix }}</td>
+    <td>{{ p.stock }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+
+<h3>Clients</h3>
+
+<table border="1">
+
+<tr>
+    <th>Nom</th>
+    <th>Email</th>
+</tr>
+
+{% for c in clients %}
+<tr>
+    <td>{{ c.nom }}</td>
+    <td>{{ c.email }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>
