@@ -1,54 +1,62 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Commander</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-<h2>Commander un produit</h2>
+<div class="container">
 
-<form method="POST">
+    <h1>Passer une commande</h1>
 
-    <label>Produit :</label>
+    <form method="POST">
 
-    <select name="id_produit">
+        <label>Produit</label>
 
-        {% for produit in produits %}
-        <option value="{{ produit.id }}">
-            {{ produit.nom }} - {{ produit.prix }} €
-        </option>
-        {% endfor %}
+        <select name="id_produit" required>
 
-    </select>
+            {% for produit in produits %}
 
-    <br><br>
+            <option value="{{ produit.id }}">
+                {{ produit.nom }}
+                -
+                {{ produit.prix }} €
+                -
+                Stock : {{ produit.stock }}
+            </option>
 
-    <label>Quantité :</label>
+            {% endfor %}
 
-    <input
-        type="number"
-        name="quantite"
-        min="1"
-        value="1"
-        required
-    >
+        </select>
 
-    <br><br>
+        <br><br>
 
-    <button type="submit">
-        Commander
-    </button>
+        <label>Quantité</label>
 
-</form>
+        <input
+            type="number"
+            name="quantite"
+            min="1"
+            required
+        >
 
-<br>
+        <br><br>
 
-<a href="/client/{{ id_client }}">
-    Retour espace client
-</a>
+        <button type="submit">
+            Commander
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/client/{{ id_client }}">
+        Retour espace client
+    </a>
+
+</div>
 
 </body>
 </html>

@@ -4,7 +4,9 @@ import bcrypt
 
 app = Flask(__name__)
 
-# Connexion MySQL
+# ==========================
+# CONNEXION MYSQL
+# ==========================
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -31,7 +33,7 @@ def login():
         email = request.form["email"].strip()
         password = request.form["password"]
 
-        # ADMIN
+        # Compte administrateur
         if email == "admin" and password == "1234":
             return redirect("/admin")
 
@@ -43,7 +45,6 @@ def login():
         )
 
         client = cursor.fetchone()
-
         cursor.close()
 
         if client:
@@ -89,6 +90,78 @@ def admin():
 
 
 # ==========================
+# LISTE PRODUITS
+# ==========================
+@app.route("/produits")
+def produits():
+
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT *
+        FROM produits
+    """)
+
+    produits = cursor.fetchall()
+
+    cursor.close()
+
+    return render_template(
+        "produits.html",
+        produits=produits
+    )
+
+
+# ==========================
+# AJOUT PRODUIT
+# ==========================
+@app.route("/ajouter_produit", methods=["GET", "POST"])
+def ajouter_produit():
+
+    if request.method == "POST":
+
+        nom = request.form["nom"]
+        description = request.form["description"]
+        prix = request.form["prix"]
+        stock = request.form["stock"]
+        image = request.form["image"]
+
+        cursor = db.cursor()
+
+        cursor.execute("""
+            INSERT INTO produits
+            (
+                nom,
+                description,
+                prix,
+                stock,
+                image
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s,
+                %s
+            )
+        """, (
+            nom,
+            description,
+            prix,
+            stock,
+            image
+        ))
+
+        db.commit()
+        cursor.close()
+
+        return redirect("/admin")
+
+    return render_template("ajouter_produit.html")
+
+
+# ==========================
 # PAGE CLIENT
 # ==========================
 @app.route("/client/<int:id_client>")
@@ -127,7 +200,8 @@ def client(id_client):
 # ==========================
 # COMMANDER
 # ==========================
-@app.route("/client/<int:id_client>/commander", methods=["GET", "POST"])
+@app.route("/client/<int:id_client>/commander",
+           methods=["GET", "POST"])
 def commander(id_client):
 
     cursor = db.cursor(dictionary=True)
@@ -159,11 +233,23 @@ def commander(id_client):
 
         cursor.execute("""
             INSERT INTO commandes
-            (id_client, date_commande, total, statut)
-
+            (
+                id_client,
+                date_commande,
+                total,
+                statut
+            )
             VALUES
-            (%s, NOW(), %s, 'En attente')
-        """, (id_client, total))
+            (
+                %s,
+                NOW(),
+                %s,
+                'En attente'
+            )
+        """, (
+            id_client,
+            total
+        ))
 
         db.commit()
 
@@ -171,10 +257,19 @@ def commander(id_client):
 
         cursor.execute("""
             INSERT INTO details_commandes
-            (id_commande, id_produit, quantite, prix_unitaire)
-
+            (
+                id_commande,
+                id_produit,
+                quantite,
+                prix_unitaire
+            )
             VALUES
-            (%s, %s, %s, %s)
+            (
+                %s,
+                %s,
+                %s,
+                %s
+            )
         """, (
             id_commande,
             id_produit,
@@ -204,6 +299,14 @@ def commander(id_client):
         produits=produits,
         id_client=id_client
     )
+
+
+# ==========================
+# DECONNEXION
+# ==========================
+@app.route("/logout")
+def logout():
+    return redirect("/")
 
 
 # ==========================

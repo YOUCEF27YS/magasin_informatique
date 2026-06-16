@@ -1,77 +1,47 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
     <title>Produits</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-<h2>Liste des produits</h2>
+<div class="container">
 
-<table border="1">
+    <h1>Liste des produits</h1>
 
-    <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-        <th>Stock</th>
-    </tr>
+    <table>
 
-    {% for produit in produits %}
-    <tr>
-        <td>{{ produit.nom }}</td>
-        <td>{{ produit.prix }} €</td>
-        <td>{{ produit.stock }}</td>
-    </tr>
-    {% endfor %}
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Prix (€)</th>
+            <th>Stock</th>
+        </tr>
 
-</table>
+        {% for produit in produits %}
 
-<br>
+        <tr>
+            <td>{{ produit.id }}</td>
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.description }}</td>
+            <td>{{ produit.prix }}</td>
+            <td>{{ produit.stock }}</td>
+        </tr>
 
-<a href="/">
-    <button>Retour accueil</button>
-</a>
+        {% endfor %}
 
-</body>
+    </table>
 
-</html><!DOCTYPE html>
-<html>
+    <br>
 
-<head>
-    <title>Produits</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+    <a href="/admin">
+        Retour Administration
+    </a>
 
-<body>
-
-<h2>Liste des produits</h2>
-
-<table border="1">
-
-    <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-        <th>Stock</th>
-    </tr>
-
-    {% for produit in produits %}
-    <tr>
-        <td>{{ produit.nom }}</td>
-        <td>{{ produit.prix }} €</td>
-        <td>{{ produit.stock }}</td>
-    </tr>
-    {% endfor %}
-
-</table>
-
-<br>
-
-<a href="/">
-    <button>Retour accueil</button>
-</a>
+</div>
 
 </body>
-
 </html>
