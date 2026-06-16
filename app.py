@@ -195,7 +195,71 @@ def client(id_client):
         produits=produits,
         id_client=id_client
     )
+@app.route("/inscription", methods=["GET", "POST"])
+def inscription():
 
+    if request.method == "POST":
+
+        nom = request.form["nom"]
+        prenom = request.form["prenom"]
+        email = request.form["email"]
+        password = request.form["password"]
+        adresse = request.form["adresse"]
+        telephone = request.form["telephone"]
+
+        password_hash = bcrypt.hashpw(
+            password.encode("utf-8"),
+            bcrypt.gensalt()
+        ).decode("utf-8")
+
+        cursor = db.cursor()
+
+        cursor.execute("""
+            SELECT id
+            FROM clients
+            WHERE email = %s
+        """, (email,))
+
+        client = cursor.fetchone()
+
+        if client:
+            cursor.close()
+            return "Email déjà utilisé"
+
+        cursor.execute("""
+            INSERT INTO clients
+            (
+                nom,
+                prenom,
+                email,
+                password,
+                adresse,
+                telephone
+            )
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                %s,
+                %s,
+                %s
+            )
+        """, (
+            nom,
+            prenom,
+            email,
+            password_hash,
+            adresse,
+            telephone
+        ))
+
+        db.commit()
+        cursor.close()
+
+        return redirect("/login")
+
+    return render_template("inscription.html")
 
 # ==========================
 # COMMANDER

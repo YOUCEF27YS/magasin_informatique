@@ -2,7 +2,11 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -14,10 +18,36 @@
             <h2>Connexion</h2>
 
             <form method="POST">
-                <input type="text" name="email" placeholder="Email"><br>
-                <input type="password" name="password" placeholder="Mot de passe"><br>
-                <button type="submit">Se connecter</button>
+
+                <input type="text"
+                       name="email"
+                       placeholder="Email"
+                       required>
+
+                <br>
+
+                <input type="password"
+                       name="password"
+                       placeholder="Mot de passe"
+                       required>
+
+                <br>
+
+                <button type="submit">
+                    Se connecter
+                </button>
+
             </form>
+
+            <hr>
+
+            <p>
+                Pas encore de compte ?
+            </p>
+
+            <a href="/inscription" class="btn-inscription">
+                Créer un compte
+            </a>
 
         </div>
 

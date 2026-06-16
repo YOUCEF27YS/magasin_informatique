@@ -253,3 +253,17 @@ td{
     background:#1d4ed8;
     transform:translateY(-2px);
 }
+.btn-inscription{
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 20px;
+    background:#28a745;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.btn-inscription:hover{
+    background:#218838;
+}

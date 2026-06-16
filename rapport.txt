@@ -1,0 +1,11 @@
+
+Date : 2026-06-16 11:45:56.138884
+
+Flask (5000) :
+ACTIF
+
+MySQL (3306) :
+ACTIF
+
+Statut général :
+OK
