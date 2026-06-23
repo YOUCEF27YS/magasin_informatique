@@ -1,22 +1,37 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Magasin Informatique</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="accueil">
 
-<div class="overlay">
+    <div class="overlay">
 
-    <h1 style="color:white; font-size:40px;">
-        Bienvenue dans  le magasin informatique
-    </h1>
+        <div class="hero-box">
 
-    <a href="/login" style="font-size:20px;">
-        Se connecter
-    </a>
+            <h1 class="hero-title">
+                💻 Magasin Informatique
+            </h1>
 
-</div>
+            <p class="hero-text">
+                Vente de matériel informatique,
+                accessoires et équipements professionnels
+            </p>
+
+            <a href="/login" class="hero-btn">
+                Se connecter
+            </a>
+
+        </div>
+
+    </div>
 
 </body>
+
+</html>
