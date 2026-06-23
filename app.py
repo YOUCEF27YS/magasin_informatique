@@ -71,21 +71,37 @@ def admin():
 
     cursor = db.cursor(dictionary=True)
 
+    # Produits
     cursor.execute("SELECT * FROM produits")
     produits = cursor.fetchall()
 
-    cursor.execute("""
-        SELECT id, nom, prenom, email
-        FROM clients
-    """)
+    # Clients
+    cursor.execute("SELECT * FROM clients")
     clients = cursor.fetchall()
+
+    # Nombre commandes
+    cursor.execute("SELECT COUNT(*) AS total FROM commandes")
+    nb_commandes = cursor.fetchone()["total"]
+
+    # Chiffre d'affaires
+    cursor.execute("""
+        SELECT SUM(total) AS ca
+        FROM commandes
+        WHERE statut='Payée'
+    """)
+
+    resultat = cursor.fetchone()
+
+    chiffre_affaires = resultat["ca"] if resultat["ca"] else 0
 
     cursor.close()
 
     return render_template(
         "admin.html",
         produits=produits,
-        clients=clients
+        clients=clients,
+        nb_commandes=nb_commandes,
+        chiffre_affaires=chiffre_affaires
     )
 
 
@@ -284,6 +300,31 @@ def inscription():
         return redirect("/login")
 
     return render_template("inscription.html")
+@app.route("/historique/<int:id_client>")
+def historique(id_client):
+
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            commandes.id,
+            commandes.date_commande,
+            commandes.total,
+            commandes.statut
+        FROM commandes
+        WHERE id_client=%s
+        ORDER BY date_commande DESC
+    """, (id_client,))
+
+    commandes = cursor.fetchall()
+
+    cursor.close()
+
+    return render_template(
+        "historique.html",
+        commandes=commandes,
+        id_client=id_client
+    )
 
 # ==========================
 # COMMANDER
@@ -468,17 +509,81 @@ def panier(id_client):
 @app.route("/paiement/<int:id_client>", methods=["GET", "POST"])
 def paiement(id_client):
 
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            panier.id_produit,
+            panier.quantite,
+            produits.prix,
+            produits.prix * panier.quantite AS total
+
+        FROM panier
+
+        JOIN produits
+        ON produits.id = panier.id_produit
+
+        WHERE panier.id_client=%s
+    """, (id_client,))
+
+    produits = cursor.fetchall()
+
+    total_panier = sum(
+        produit["total"]
+        for produit in produits
+    )
+
     if request.method == "POST":
+
+        cursor.execute("""
+            INSERT INTO commandes
+            (id_client, date_commande, total, statut)
+            VALUES
+            (%s, NOW(), %s, 'Payée')
+        """, (
+            id_client,
+            total_panier
+        ))
+
+        db.commit()
+
+        id_commande = cursor.lastrowid
+
+        for produit in produits:
+
+            cursor.execute("""
+                INSERT INTO details_commandes
+                (id_commande, id_produit, quantite, prix_unitaire)
+                VALUES
+                (%s,%s,%s,%s)
+            """, (
+                id_commande,
+                produit["id_produit"],
+                produit["quantite"],
+                produit["prix"]
+            ))
+
+        cursor.execute("""
+            DELETE FROM panier
+            WHERE id_client=%s
+        """, (id_client,))
+
+        db.commit()
+
+        cursor.close()
 
         return render_template(
             "confirmation.html",
             id_client=id_client,
-            id_commande=1,
-            total_panier=0
+            id_commande=id_commande,
+            total_panier=total_panier
         )
 
+    cursor.close()
+
     return render_template(
-        "paiement.html"
+        "paiement.html",
+        total_panier=total_panier
     )
 
 # ==========================

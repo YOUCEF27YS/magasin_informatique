@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Espace Client</title>
+    <title>Catalogue Produits</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -10,27 +10,37 @@
 
 <div class="container">
 
-    <h2>Catalogue Produits</h2>
+    <div class="header-client">
 
-    <div class="navbar">
+        <h2>💻 Magasin Informatique</h2>
 
-    <a href="/client/{{ id_client }}">
-        Catalogue
-    </a>
+        <p class="welcome">
+            Bienvenue dans votre espace client
+        </p>
 
-    <a href="/panier/{{ id_client }}">
-        Mon panier
-    </a>
+        <div class="navbar">
 
-    <a href="/">
-        Déconnexion
-    </a>
+            <a href="/client/{{ id_client }}">
+                Catalogue
+            </a>
 
-</div>
+            <a href="/panier/{{ id_client }}">
+                Panier
+            </a>
 
-    <br><br>
+            <a href="/historique/{{ id_client }}">
+                Historique
+            </a>
 
-    <table border="1">
+            <a href="/">
+                Déconnexion
+            </a>
+
+        </div>
+
+    </div>
+
+    <table>
 
         <tr>
             <th>Nom</th>
@@ -49,9 +59,20 @@
 
             <td>
 
-                <a href="/ajouter_panier/{{ id_client }}/{{ produit.id }}">
+                {% if produit.stock > 0 %}
+
+                <a href="/ajouter_panier/{{ id_client }}/{{ produit.id }}"
+                   class="btn-commander">
                     Ajouter au panier
                 </a>
+
+                {% else %}
+
+                <span style="color:red;font-weight:bold;">
+                    Rupture de stock
+                </span>
+
+                {% endif %}
 
             </td>
 

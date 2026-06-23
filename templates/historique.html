@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Historique</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Historique des commandes</h2>
+
+    <div class="navbar">
+
+        <a href="/client/{{ id_client }}">Catalogue</a>
+
+        <a href="/panier/{{ id_client }}">Panier</a>
+
+        <a href="/historique/{{ id_client }}">Historique</a>
+
+        <a href="/">Déconnexion</a>
+
+    </div>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Statut</th>
+        </tr>
+
+        {% for commande in commandes %}
+
+        <tr>
+            <td>{{ commande.id }}</td>
+            <td>{{ commande.date_commande }}</td>
+            <td>{{ commande.total }} €</td>
+            <td>
+
+{% if commande.statut == "Payée" %}
+<span class="statut-paye">
+    {{ commande.statut }}
+</span>
+
+{% else %}
+<span class="statut-attente">
+    {{ commande.statut }}
+</span>
+{% endif %}
+
+</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
