@@ -10,48 +10,52 @@
 
 <div class="container">
 
-    <a href="/" class="logout-btn">
-        Se déconnecter
+    <h2>Catalogue Produits</h2>
+
+    <a href="/logout">
+        Déconnexion
     </a>
 
-    <h2>Espace Client</h2>
+    <br><br>
 
-    <h3>Mes produits achetés</h3>
+    <a href="/panier/{{ id_client }}">
+        Voir mon panier
+    </a>
+
+    <br><br>
 
     <table border="1">
 
         <tr>
-            <th>Produit</th>
+            <th>Nom</th>
             <th>Prix</th>
-            <th>Quantité</th>
+            <th>Stock</th>
+            <th>Action</th>
         </tr>
 
-        {% for p in produits %}
+        {% for produit in produits %}
+
         <tr>
-            <td>{{ p.nom }}</td>
-            <td>{{ p.prix }} €</td>
-            <td>{{ p.quantite }}</td>
+
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.prix }} €</td>
+            <td>{{ produit.stock }}</td>
+
+            <td>
+
+                <a href="/ajouter_panier/{{ id_client }}/{{ produit.id }}">
+                    Ajouter au panier
+                </a>
+
+            </td>
+
         </tr>
+
         {% endfor %}
 
     </table>
 
-    <br><br>
-
-    <div class="commande-center">
-
-        <a href="/client/{{ id_client }}/commander">
-
-            <button class="btn-commander">
-                Commander un produit
-            </button>
-
-        </a>
-
-    </div>
-
 </div>
 
 </body>
-
 </html>

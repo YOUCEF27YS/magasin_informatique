@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mon Panier</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Mon panier</h1>
+
+    <div class="actions">
+
+        <a href="/client/{{ id_client }}" class="btn-admin">
+            Continuer mes achats
+        </a>
+
+    </div>
+
+    <br>
+
+    {% if produits %}
+
+    <table>
+
+        <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+
+        {% for p in produits %}
+
+        <tr>
+            <td>{{ p.nom }}</td>
+            <td>{{ p.prix }} €</td>
+            <td>{{ p.quantite }}</td>
+            <td>{{ p.total }} €</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <h2 class="total-panier">
+        Total panier : {{ total_panier }} €
+    </h2>
+
+    <div class="commande-center">
+
+        <a href="/paiement/{{ id_client }}">
+
+            <button class="btn-commander">
+                Valider et payer
+            </button>
+
+        </a>
+
+    </div>
+
+    {% else %}
+
+    <h2>Panier vide</h2>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

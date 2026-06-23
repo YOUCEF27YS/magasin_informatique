@@ -169,6 +169,30 @@ def client(id_client):
 
     cursor = db.cursor(dictionary=True)
 
+    cursor.execute(
+        "SELECT * FROM clients WHERE id=%s",
+        (id_client,)
+    )
+
+    client = cursor.fetchone()
+
+    cursor.execute(
+        "SELECT * FROM produits"
+    )
+
+    produits = cursor.fetchall()
+
+    cursor.close()
+
+    return render_template(
+        "client.html",
+        client=client,
+        produits=produits,
+        id_client=id_client
+    )
+
+    cursor = db.cursor(dictionary=True)
+
     cursor.execute("""
         SELECT produits.nom,
                produits.prix,
@@ -363,7 +387,99 @@ def commander(id_client):
         produits=produits,
         id_client=id_client
     )
+@app.route("/ajouter_panier/<int:id_client>/<int:id_produit>")
+def ajouter_panier(id_client, id_produit):
 
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT stock FROM produits WHERE id=%s",
+        (id_produit,)
+    )
+
+    produit = cursor.fetchone()
+
+    if not produit:
+        return "Produit introuvable"
+
+    cursor.execute("""
+        SELECT *
+        FROM panier
+        WHERE id_client=%s
+        AND id_produit=%s
+    """, (id_client, id_produit))
+
+    article = cursor.fetchone()
+
+    if article:
+
+        cursor.execute("""
+            UPDATE panier
+            SET quantite = quantite + 1
+            WHERE id_client=%s
+            AND id_produit=%s
+        """, (id_client, id_produit))
+
+    else:
+
+        cursor.execute("""
+            INSERT INTO panier
+            (id_client,id_produit,quantite)
+            VALUES(%s,%s,%s)
+        """, (id_client,id_produit,1))
+
+    db.commit()
+
+    return redirect(f"/panier/{id_client}")
+@app.route("/panier/<int:id_client>")
+def panier(id_client):
+
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+        panier.id,
+        produits.nom,
+        produits.prix,
+        panier.quantite,
+        produits.prix * panier.quantite AS total
+
+        FROM panier
+
+        JOIN produits
+        ON produits.id = panier.id_produit
+
+        WHERE panier.id_client=%s
+    """, (id_client,))
+
+    produits = cursor.fetchall()
+
+    total_panier = sum(
+        produit["total"]
+        for produit in produits
+    )
+
+    return render_template(
+        "panier.html",
+        produits=produits,
+        total_panier=total_panier,
+        id_client=id_client
+    )
+@app.route("/paiement/<int:id_client>", methods=["GET", "POST"])
+def paiement(id_client):
+
+    if request.method == "POST":
+
+        return render_template(
+            "confirmation.html",
+            id_client=id_client,
+            id_commande=1,
+            total_panier=0
+        )
+
+    return render_template(
+        "paiement.html"
+    )
 
 # ==========================
 # DECONNEXION
@@ -378,3 +494,5 @@ def logout():
 # ==========================
 if __name__ == "__main__":
     app.run(debug=True)
+
+  

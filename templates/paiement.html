@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Paiement</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Paiement sécurisé</h1>
+
+    <h2>
+        Total : {{ total_panier }} €
+    </h2>
+
+    <form method="POST">
+
+        <input type="text"
+               name="nom"
+               placeholder="Nom sur la carte"
+               required>
+
+        <br><br>
+
+        <input type="text"
+               name="numero"
+               placeholder="Numéro de carte"
+               required>
+
+        <br><br>
+
+        <input type="text"
+               name="expiration"
+               placeholder="MM/AA"
+               required>
+
+        <br><br>
+
+        <input type="text"
+               name="cvv"
+               placeholder="CVV"
+               required>
+
+        <br><br>
+
+        <button type="submit">
+            Payer
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

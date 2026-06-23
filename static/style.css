@@ -267,3 +267,29 @@ td{
 .btn-inscription:hover{
     background:#218838;
 }
+.total-panier{
+    text-align:center;
+    margin-top:30px;
+    color:#2d5fff;
+}
+
+.actions{
+    text-align:center;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table th{
+    background:#4a6cf7;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    padding:12px;
+    text-align:center;
+}
