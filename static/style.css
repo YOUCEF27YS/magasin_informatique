@@ -472,3 +472,33 @@ button:hover{
 .navbar a:hover{
     background:#3155ef;
 }
+.form-card{
+    width:600px;
+    margin:50px auto;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.form-card form{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-card label{
+    text-align:left;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.form-card input{
+    width:100%;
+    margin:5px 0;
+    box-sizing:border-box;
+}
+
+.form-card button{
+    width:100%;
+    margin-top:25px;
+}
